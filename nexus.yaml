@@ -1,0 +1,69 @@
+kind: List
+apiVersion: v1beta3
+items:
+- kind: DeploymentConfig
+  apiVersion: v1beta3
+  metadata:
+    name: nexus-dc
+  spec:
+    replicas: 1
+    selector:
+      name: nexus-pod 
+    strategy:
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          name:  nexus-pod
+      spec:
+        volumes:
+        - name: pvol
+          persistantVolumeClaim:
+            claimName: nexus-claim        
+        containers:
+        - capabilities: {}
+          image: sonatype/nexus
+          imagePullPolicy: PullIfNotPresent
+          livenessProbe:
+            initialDelaySeconds: 20
+            tcpSocket:
+              port: 3000
+            timeoutSeconds: 1
+          name: nexus-pod
+          ports:
+          - containerPort: 8081
+            name: nexus-http-8081
+            protocol: TCP
+          securityContext:
+            capabilities: {}
+            privileged: false
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /sonatype-work
+            name: pvol
+        dnsPolicy: ClusterFirst
+        nodeSelector:
+          region: infra
+        restartPolicy: Always
+        serviceAccount: ''
+    triggers:
+    - type: ConfigChange
+         
+- kind: Service
+  apiVersion: v1beta3
+  metadata:
+    name: nexus-service
+  spec:
+    ports:
+    - port: 8081
+    selector:
+      name: nexus-pod
+
+- kind: Route
+  apiVersion: v1beta1
+  metadata:
+    name: nexus-route
+  host: nexus.cloudapps.example.com
+  serviceName: nexus-service
