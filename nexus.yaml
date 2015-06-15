@@ -6,12 +6,12 @@ items:
   metadata:
     name: nexus-dc
   spec:
-    replicas: 1
+    replicas: 0
     selector:
       name: nexus-pod 
     strategy:
       resources: {}
-      type: Recreate
+      type: Rolling
     template:
       metadata:
         creationTimestamp: null
@@ -27,9 +27,9 @@ items:
           image: sonatype/nexus
           imagePullPolicy: PullIfNotPresent
           livenessProbe:
-            initialDelaySeconds: 20
+            initialDelaySeconds: 180
             tcpSocket:
-              port: 3000
+              port: 8081
             timeoutSeconds: 1
           name: nexus-pod
           ports:
