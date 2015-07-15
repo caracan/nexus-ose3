@@ -1,6 +1,6 @@
 #Overview
 
-Running a [Nexus](http://www.sonatype.org/nexus/go/) service as a container within OSE v3 (Beta4), with a persistant volume to survive restarts. Uses the 
+Running a [Nexus](http://www.sonatype.org/nexus/go/) service as a container within OSE v3 (Beta4), with a persistent volume to survive restarts. Uses the
 
 Currently it is configured to run in the infra labeled nodes (i.e. the master).
 
@@ -35,11 +35,11 @@ Running `exportfs` you should see something similar to:
 
 ##Installation
 
-1. Create the PersistantVolume:
+1. Create the PersistentVolume:
 
         osc create -f persistent-volume.yaml
 
-2. Create the PersistantVolumeClaim
+2. Create the PersistentVolumeClaim
 
         osc create -f persistent-volume-claim.yaml
 
@@ -52,5 +52,3 @@ Running `exportfs` you should see something similar to:
 OSE will do the running for you! First run you will have to config Gogs.
 
 1. Head to http://nexus.cloudapps.example.com/ (That is the entry the route creates) which on first run will send you to the install page
-
-
