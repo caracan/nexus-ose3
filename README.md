@@ -33,7 +33,7 @@ Running `exportfs` you should see something similar to:
 
 ##Installation
 
-This assumes you are running as the admin user. You can run as a non-admin user, but for this example creating the Project and the PersistentVolume still needs to be done as the administrator. We will create a separate project to run Nexus in and target it to nodes labelled "region=infra" in.
+This assumes you are running as the admin user. You can run as a non-admin user, but for this example creating the Project and the PersistentVolume still needs to be done as an administrator. We will create a separate project to run Nexus in and target it to nodes labelled "region=infra" in.
 
 1. Create the project
 
@@ -51,8 +51,14 @@ This assumes you are running as the admin user. You can run as a non-admin user,
 
         oc create -f nexus.yaml -n infra
 
+1. Attach the claimed volume to the nexus container
+
+        oc volume dc/nexus-dc --add --name=pvol -t persistentVolumeClaim --claim-name=nexus-claim --overwrite -n infra
+
 ##Running
 
-OSE will do the running for you! First run you will have to configure Nexus.
+OSE will do the running for you! First run you will have to configure Nexus. It may take a little while to pull the nexus container to run it but running
 
-1. Head to http://nexus.cloudapps.example.com/ (That is the entry the route creates) which on first run will send you to the install page
+1. Head to http://nexus.cloudapps.example.com/ (That is the entry the route creates) which on first run will take you to the front page (Default Nexus login is admin/admin123).
+
+You should be able to look at the exported NFS directory to see the files being created.
