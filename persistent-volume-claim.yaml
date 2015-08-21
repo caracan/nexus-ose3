@@ -8,4 +8,4 @@ spec:
   resources:
     requests:
       storage: 5Gi
-
+  reason: "Backing for Nexus server"
