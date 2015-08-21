@@ -41,15 +41,15 @@ This assumes you are running as the admin user. You can run as a non-admin user,
 
 1. Create the PersistentVolume:
 
-        osc create -f persistent-volume.yaml
+        oc create -f persistent-volume.yaml
 
 1. Create the PersistentVolumeClaim
 
-        osc create -f persistent-volume-claim.yaml
+        oc create -f persistent-volume-claim.yaml -n infra
 
 1. Create the pods, service & route
 
-        osc create -f nexus.yaml
+        oc create -f nexus.yaml -n infra
 
 ##Running
 
